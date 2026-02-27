@@ -32,6 +32,13 @@ body {
     to { opacity: 1; }
 }
 
+/* Page logo */
+.logo {
+    width: 700px;
+    max-width: 90%;
+    margin: 20px 0 10px 0;
+}
+
 .tagline {
     font-family: 'Lobster', cursive;
     font-size: 2rem;
@@ -73,7 +80,7 @@ button:hover {
 .result-card {
     margin-top: 30px;
     padding: 25px;
-    background: none; /* removed black box */
+    background: none; /* fully transparent */
     border-radius: 12px;
     max-width: 700px;
     width: 90%;
@@ -118,7 +125,8 @@ button:hover {
 </head>
 <body>
 
-<!-- Page has no logos, only tagline -->
+<!-- Page logo back on top -->
+<img src="FusionSlab.png" alt="FusionSlab Logo" class="logo">
 <p class="tagline">Where Power Meets Precision</p>
 
 <div class="search-container">
