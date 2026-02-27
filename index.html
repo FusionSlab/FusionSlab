@@ -149,6 +149,24 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
+// Function to get PSA full labels based on numeric grade
+function getPSALabel(grade) {
+    switch (grade) {
+        case "10+": return "PERFECT!";
+        case "10": return "GEM-MINT";
+        case "9": return "MINT";
+        case "8": return "NEAR MINT-MINT";
+        case "7": return "NEAR MINT";
+        case "6": return "EX-MT";
+        case "5": return "EXCELLENT";
+        case "4": return "VG-EX";
+        case "3": return "VERY GOOD";
+        case "2": return "GOOD";
+        case "1": return "POOR";
+        default: return "N/A";
+    }
+}
+
 window.verifyCert = async function () {
     const certInput = document.getElementById("certSearch").value.trim();
     const resultCard = document.getElementById("resultCard");
@@ -168,6 +186,7 @@ window.verifyCert = async function () {
             const data = snapshot.val();
             let output = `<h2 class='verified'>Certification # ${certInput}</h2>`;
 
+            // Images
             if (data.image1 || data.image2) {
                 output += `<div class="images-row">`;
                 if (data.image1) output += `<img src="${data.image1}">`;
@@ -175,12 +194,15 @@ window.verifyCert = async function () {
                 output += `</div>`;
             }
 
+            // Grade with PSA full label
             if (data.grade) {
-                output += `<h2 style="text-align:center; margin:10px 0; color:${data.gradeName || '#FFD700'};">
-                    Grade: ${data.grade} (${data.gradeName || ''})
+                const label = getPSALabel(data.grade);
+                output += `<h2 style="text-align:center; margin:10px 0; color:#FFD700;">
+                    Grade: ${data.grade} (${label})
                 </h2>`;
             }
 
+            // Subgrades
             if (data.subgrades) {
                 output += `<div style="text-align:center; margin:10px 0;">
                     <strong>Subgrades:</strong><br>
@@ -191,15 +213,18 @@ window.verifyCert = async function () {
                 </div>`;
             }
 
+            // Status
             output += `<div style="text-align:center; font-weight:bold; margin:10px 0; color:${
                 data.status === "Revoked" ? "#ff4d4d" : "#4dff88"
             };">
                 Status: ${data.status || "N/A"}
             </div>`;
 
+            // Owner
             output += `<h3>Owner</h3>
                        <p><strong>Full Name:</strong> ${data.owner || "N/A"}</p>`;
 
+            // Card info
             output += `<h3>Card Information</h3>`;
             const fields = ["pokemon", "variant", "year", "set", "notation", "declared_value"];
             fields.forEach(f => {
