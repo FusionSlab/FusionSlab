@@ -94,7 +94,6 @@ button:hover {
     margin: 10px 0;
 }
 
-/* Two images side by side */
 .images-row {
     display: flex;
     justify-content: center;
@@ -137,7 +136,6 @@ button:hover {
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-// Firebase Config
 const firebaseConfig = {
   apiKey: "AIzaSyBimLxcEZPGYY7KjX3zKsR_eFCfqPvxHg",
   authDomain: "fusionslab-cert-verification.firebaseapp.com",
@@ -170,29 +168,19 @@ window.verifyCert = async function () {
             const data = snapshot.val();
             let output = `<h2 class='verified'>Certification # ${certInput}</h2>`;
 
-            // Handle image1 and image2
             if (data.image1 || data.image2) {
                 output += `<div class="images-row">`;
-
-                if (data.image1) {
-                    output += `<img src="${data.image1}" alt="Certificate Image 1">`;
-                }
-
-                if (data.image2) {
-                    output += `<img src="${data.image2}" alt="Certificate Image 2">`;
-                }
-
+                if (data.image1) output += `<img src="${data.image1}">`;
+                if (data.image2) output += `<img src="${data.image2}">`;
                 output += `</div>`;
             }
 
-            // Grade
             if (data.grade) {
                 output += `<h2 style="text-align:center; margin:10px 0; color:${data.gradeName || '#FFD700'};">
-                               Grade: ${data.grade} (${data.gradeName || ''})
-                           </h2>`;
+                    Grade: ${data.grade} (${data.gradeName || ''})
+                </h2>`;
             }
 
-            // Subgrades
             if (data.subgrades) {
                 output += `<div style="text-align:center; margin:10px 0;">
                     <strong>Subgrades:</strong><br>
@@ -203,37 +191,31 @@ window.verifyCert = async function () {
                 </div>`;
             }
 
-            // Status
-            output += `<div style="text-align:center; font-weight:bold; margin:10px 0; color: ${
+            output += `<div style="text-align:center; font-weight:bold; margin:10px 0; color:${
                 data.status === "Revoked" ? "#ff4d4d" : "#4dff88"
             };">
                 Status: ${data.status || "N/A"}
             </div>`;
 
-            // Owner
             output += `<h3>Owner</h3>
                        <p><strong>Full Name:</strong> ${data.owner || "N/A"}</p>`;
 
-            // Card Information
             output += `<h3>Card Information</h3>`;
-            const fields = ["pokemon", "variant", "year", "set", "edition", "declared_value"];
+            const fields = ["pokemon", "variant", "year", "set", "notation", "declared_value"];
             fields.forEach(f => {
                 output += `<p><strong>${f.charAt(0).toUpperCase() + f.slice(1).replace("_"," ")}:</strong> ${data[f] || "N/A"}</p>`;
             });
 
             resultCard.innerHTML = output;
-
         } else {
             resultCard.innerHTML = "<h2 class='not-found'>❌ Certification Not Found</h2>";
         }
-
     } catch (error) {
         resultCard.innerHTML = "<h2 class='not-found'>Database Connection Error</h2>";
         console.error(error);
     }
 };
 
-// Updated Submit button function
 window.goToSubmit = function () {
     window.location.href = "https://fusionslab.github.io/FusionSlab-Submission-Center/";
 };
