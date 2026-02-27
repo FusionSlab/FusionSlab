@@ -163,6 +163,7 @@ function getPSALabel(grade) {
         case "3": return "VERY GOOD";
         case "2": return "GOOD";
         case "1": return "POOR";
+        case "Alt": return "ALTERNATE ART";
         default: return "N/A";
     }
 }
@@ -194,10 +195,11 @@ window.verifyCert = async function () {
                 output += `</div>`;
             }
 
-            // Grade with PSA full label
+            // Grade with PSA full label & color logic
             if (data.grade) {
                 const label = getPSALabel(data.grade);
-                output += `<h2 style="text-align:center; margin:10px 0; color:#FFD700;">
+                const gradeColor = (data.grade === "Alt") ? "#ff4d4d" : "#4dff88"; // red if Alt, green otherwise
+                output += `<h2 style="text-align:center; margin:10px 0; color:${gradeColor};">
                     Grade: ${data.grade} (${label})
                 </h2>`;
             }
@@ -213,10 +215,13 @@ window.verifyCert = async function () {
                 </div>`;
             }
 
-            // Status
-            output += `<div style="text-align:center; font-weight:bold; margin:10px 0; color:${
-                data.status === "Revoked" ? "#ff4d4d" : "#4dff88"
-            };">
+            // Status color logic
+            let statusColor = "#4dff88"; // default green
+            if (!data.status || data.status.toLowerCase() === "inactive" || data.status.toLowerCase() === "revoked") {
+                statusColor = "#ff4d4d"; // red
+            }
+
+            output += `<div style="text-align:center; font-weight:bold; margin:10px 0; color:${statusColor};">
                 Status: ${data.status || "N/A"}
             </div>`;
 
