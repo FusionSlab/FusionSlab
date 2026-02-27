@@ -69,12 +69,12 @@ button:hover {
     background-color: #00a2d8;
 }
 
+/* Transparent result card (no black box) */
 .result-card {
     margin-top: 30px;
     padding: 25px;
-    background: rgba(255, 255, 255, 0.1);
+    background: none; /* removed black box */
     border-radius: 12px;
-    backdrop-filter: blur(10px);
     max-width: 700px;
     width: 90%;
     display: none;
@@ -118,7 +118,7 @@ button:hover {
 </head>
 <body>
 
-<!-- Page now has no logos at all -->
+<!-- Page has no logos, only tagline -->
 <p class="tagline">Where Power Meets Precision</p>
 
 <div class="search-container">
