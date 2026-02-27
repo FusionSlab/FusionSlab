@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FusionSlab</title>
 
+<!-- Favicon (tab icon) -->
+<link rel="icon" href="FusionSlab Logo.png" type="image/png">
+
 <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
 
 <style>
@@ -16,29 +19,11 @@ body {
     text-align: center;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start; /* top-aligned due to header */
+    justify-content: center;
     align-items: center;
     min-height: 100vh;
-    padding-top: 80px; /* space for top bar */
+    padding: 20px;
     animation: fadeIn 1.2s ease-in-out;
-}
-
-/* Top navigation bar */
-.top-bar {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    height: 70px;
-    background-color: #0a1b2c;
-    display: flex;
-    align-items: center;
-    padding: 0 20px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-    z-index: 1000;
-}
-
-.top-bar img {
-    height: 50px;
 }
 
 /* Fade-in animation */
@@ -47,7 +32,6 @@ body {
     to { opacity: 1; }
 }
 
-/* Logo below top bar */
 .logo {
     width: 700px;
     max-width: 90%;
@@ -140,11 +124,7 @@ button:hover {
 </head>
 <body>
 
-<!-- Top navigation bar with logo -->
-<div class="top-bar">
-    <img src="FusionSlab Logo.png" alt="FusionSlab Logo">
-</div>
-
+<!-- Main Page Logo and tagline -->
 <img src="FusionSlab.png" alt="FusionSlab Logo" class="logo">
 <p class="tagline">Where Power Meets Precision</p>
 
@@ -174,7 +154,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
-// Function to get PSA full labels based on numeric grade
+// PSA grade labels
 function getPSALabel(grade) {
     switch (grade) {
         case "10+": return "PERFECT!";
@@ -223,7 +203,7 @@ window.verifyCert = async function () {
             // Grade with PSA full label & color logic
             if (data.grade) {
                 const label = getPSALabel(data.grade);
-                const gradeColor = (data.grade === "Alt") ? "#ff4d4d" : "#4dff88"; // red if Alt, green otherwise
+                const gradeColor = (data.grade === "Alt") ? "#ff4d4d" : "#4dff88";
                 output += `<h2 style="text-align:center; margin:10px 0; color:${gradeColor};">
                     Grade: ${data.grade} (${label})
                 </h2>`;
@@ -240,10 +220,10 @@ window.verifyCert = async function () {
                 </div>`;
             }
 
-            // Status color logic
-            let statusColor = "#4dff88"; // default green
+            // Status color
+            let statusColor = "#4dff88"; 
             if (!data.status || data.status.toLowerCase() === "inactive" || data.status.toLowerCase() === "revoked") {
-                statusColor = "#ff4d4d"; // red
+                statusColor = "#ff4d4d";
             }
 
             output += `<div style="text-align:center; font-weight:bold; margin:10px 0; color:${statusColor};">
