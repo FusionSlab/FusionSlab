@@ -6,7 +6,7 @@
 <title>FusionSlab</title>
 
 <!-- Favicon (tab icon only) -->
-<link rel="icon" href="FusionSlab Logo.png" type="image/png">
+<link rel="icon" href="web-app-manifest-512x512.png" type="image/png">
 
 <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
 
@@ -14,7 +14,7 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); /* your updated background */
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
     color: white;
     text-align: center;
     display: flex;
@@ -26,13 +26,11 @@ body {
     animation: fadeIn 1.2s ease-in-out;
 }
 
-/* Fade-in animation */
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
 }
 
-/* Page logo */
 .logo {
     width: 700px;
     max-width: 90%;
@@ -76,11 +74,10 @@ button:hover {
     background-color: #00a2d8;
 }
 
-/* Result card */
 .result-card {
     margin-top: 30px;
     padding: 25px;
-    background: none; /* fully transparent */
+    background: none;
     border-radius: 12px;
     max-width: 700px;
     width: 90%;
@@ -125,7 +122,6 @@ button:hover {
 </head>
 <body>
 
-<!-- Page logo -->
 <img src="FusionSlab.png" alt="FusionSlab Logo" class="logo">
 <p class="tagline">Where Power Meets Precision</p>
 
@@ -155,7 +151,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
-// PSA grade labels
 function getPSALabel(grade) {
     switch (grade) {
         case "10+": return "PERFECT!";
@@ -193,7 +188,6 @@ window.verifyCert = async function () {
             const data = snapshot.val();
             let output = `<h2 class='verified'>Certification # ${certInput}</h2>`;
 
-            // Images
             if (data.image1 || data.image2) {
                 output += `<div class="images-row">`;
                 if (data.image1) output += `<img src="${data.image1}">`;
@@ -201,7 +195,6 @@ window.verifyCert = async function () {
                 output += `</div>`;
             }
 
-            // Grade with PSA full label & color logic
             if (data.grade) {
                 const label = getPSALabel(data.grade);
                 const gradeColor = (data.grade === "Alt") ? "#ff4d4d" : "#4dff88";
@@ -210,7 +203,6 @@ window.verifyCert = async function () {
                 </h2>`;
             }
 
-            // Subgrades
             if (data.subgrades) {
                 output += `<div style="text-align:center; margin:10px 0;">
                     <strong>Subgrades:</strong><br>
@@ -221,7 +213,6 @@ window.verifyCert = async function () {
                 </div>`;
             }
 
-            // Status color
             let statusColor = "#4dff88"; 
             if (!data.status || data.status.toLowerCase() === "inactive" || data.status.toLowerCase() === "revoked") {
                 statusColor = "#ff4d4d";
@@ -231,11 +222,9 @@ window.verifyCert = async function () {
                 Status: ${data.status || "N/A"}
             </div>`;
 
-            // Owner
             output += `<h3>Owner</h3>
                        <p><strong>Full Name:</strong> ${data.owner || "N/A"}</p>`;
 
-            // Card info
             output += `<h3>Card Information</h3>`;
             const fields = ["pokemon", "variant", "year", "set", "notation", "declared_value"];
             fields.forEach(f => {
