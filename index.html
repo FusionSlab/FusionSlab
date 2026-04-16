@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FusionSlab</title>
 
+<!-- Favicon (tab icon only) -->
+<link rel="icon" href="web-app-manifest-512x512.png" type="image/png">
 <!-- Favicon -->
 <link rel="icon" type="image/png" sizes="32x32" href="web-app-manifest-512x512.png">
 
@@ -53,17 +55,12 @@ body {
     width: 90%;
     max-width: 500px;
     margin-bottom: 20px;
-h1 {
-    margin-bottom: 10px;
 }
 
 input {
     width: 100%;
     padding: 15px;
     border-radius: 8px;
-    padding: 12px;
-    width: 260px;
-    border-radius: 6px;
     border: none;
     font-size: 16px;
 }
@@ -71,15 +68,11 @@ input {
 button {
     padding: 15px 40px;
     border-radius: 8px;
-    padding: 12px 25px;
-    margin: 10px;
-    border-radius: 6px;
     border: none;
     font-size: 18px;
     cursor: pointer;
     background-color: #00c6ff;
     color: black;
-    background: #00c6ff;
     font-weight: bold;
     transition: 0.3s ease;
     margin: 10px;
@@ -87,7 +80,6 @@ button {
 
 button:hover {
     background-color: #00a2d8;
-    cursor: pointer;
 }
 
 .result-card {
@@ -98,12 +90,7 @@ button:hover {
     max-width: 700px;
     width: 90%;
     display: none;
-.result {
-    margin-top: 25px;
     text-align: left;
-    max-width: 650px;
-    margin-left: auto;
-    margin-right: auto;
 }
 
 .result-card h2, .result-card h3 {
@@ -118,86 +105,76 @@ button:hover {
 }
 
 .images-row {
-.images {
     display: flex;
     justify-content: center;
     gap: 10px;
     flex-wrap: nowrap;
-    margin: 10px 0;
 }
 
 .images-row img {
     max-width: 48%;
-.images img {
-    width: 48%;
-    border-radius: 8px;
 }
 
 .not-found {
     color: #ff6b6b;
     font-weight: bold;
-.verified {
-    color: #4dff88;
     text-align: center;
 }
 
 .verified {
     color: #4dff88;
     font-weight: bold;
-.error {
-    color: #ff6b6b;
     text-align: center;
 }
 </style>
 </head>
+
 <body>
 
 <img src="FusionSlab.png" alt="FusionSlab Logo" class="logo">
 <p class="tagline">Where Power Meets Precision</p>
-<body>
 
 <div class="search-container">
     <input type="text" id="certSearch" placeholder="Enter Certification Number">
 </div>
-<h1>FusionSlab</h1>
-<p>Enter Certification Number</p>
 
 <button onclick="verifyCert()">Verify</button>
 <button onclick="goToSubmit()">Submit</button>
-<input type="text" id="certInput" placeholder="Certification #">
-<br>
-<button onclick="verify()">Verify</button>
 
 <div id="resultCard" class="result-card"></div>
-<div id="result" class="result"></div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-@@ -155,11 +93,14 @@
+import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBimLxcEZPGYY7KjX3zKsR_eFCfqPvxHg",
+  authDomain: "fusionslab-cert-verification.firebaseapp.com",
+  databaseURL: "https://fusionslab-cert-verification-default-rtdb.firebaseio.com",
+  projectId: "fusionslab-cert-verification",
+  storageBucket: "fusionslab-cert-verification.firebasestorage.app",
+  messagingSenderId: "762081069903",
+  appId: "1:762081069903:web:d7a070ce1094987c15d33a"
 };
 
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
-const db = getDatabase(app);
 
 function getPSALabel(grade) {
     switch (grade) {
         case "10+": return "PERFECT!";
-// ✅ FIXED ALT HANDLING
-function getGradeLabel(grade) {
-    const g = (grade || "").toString();
-
-    switch (g.toUpperCase()) {
-        case "10+": return "PERFECT";
         case "10": return "GEM-MINT";
         case "9": return "MINT";
         case "8": return "NEAR MINT-MINT";
-@@ -170,87 +111,82 @@
+        case "7": return "NEAR MINT";
+        case "6": return "EX-MT";
+        case "5": return "EXCELLENT";
+        case "4": return "VG-EX";
         case "3": return "VERY GOOD";
         case "2": return "GOOD";
         case "1": return "POOR";
-        case "Alt": return "ALTERNATE ART";
-        case "ALT": return "ALT"; // ✅ Correct
+        case "ALT": return "ALT";
+        case "Alt": return "ALT";
         default: return "N/A";
     }
 }
@@ -207,16 +184,9 @@ window.verifyCert = async function () {
     const resultCard = document.getElementById("resultCard");
     resultCard.style.display = "block";
     resultCard.innerHTML = "⏳ Verifying...";
-window.verify = async function () {
-    const input = document.getElementById("certInput").value.trim();
-    const result = document.getElementById("result");
-
-    result.innerHTML = "⏳ Verifying...";
 
     if (!certInput) {
         resultCard.innerHTML = "<p class='not-found'>Please enter a certification number.</p>";
-    if (!input) {
-        result.innerHTML = "<p class='error'>Enter a certification number.</p>";
         return;
     }
 
@@ -262,11 +232,14 @@ window.verify = async function () {
                 Status: ${data.status || "N/A"}
             </div>`;
 
+            // ❌ ONLY CHANGE: Owner section removed
             output += `<h3>Owner</h3>
                        <p><strong>Full Name:</strong> ${data.owner || "N/A"}</p>`;
 
             output += `<h3>Card Information</h3>`;
             const fields = ["pokemon", "set", "year", "finish", "notation", "declared_value"];
+
+            const fields = ["pokemon", "variant", "year", "set", "notation", "declared_value"];
             fields.forEach(f => {
                 output += `<p><strong>${f.charAt(0).toUpperCase() + f.slice(1).replace("_"," ")}:</strong> ${data[f] || "N/A"}</p>`;
             });
@@ -274,11 +247,6 @@ window.verify = async function () {
             resultCard.innerHTML = output;
         } else {
             resultCard.innerHTML = "<h2 class='not-found'>❌ Certification Not Found</h2>";
-        const snapshot = await get(ref(db, input));
-
-        if (!snapshot.exists()) {
-            result.innerHTML = "<p class='error'>❌ Certification Not Found</p>";
-            return;
         }
     } catch (error) {
         resultCard.innerHTML = "<h2 class='not-found'>Database Connection Error</h2>";
@@ -288,56 +256,6 @@ window.verify = async function () {
 
 window.goToSubmit = function () {
     window.location.href = "https://fusionslab.github.io/FusionSlab-Submission-Center/";
-        const data = snapshot.val();
-
-        let html = `<h2 class="verified">Certification #${input}</h2>`;
-
-        // Images
-        if (data.image1 || data.image2) {
-            html += `<div class="images">`;
-            if (data.image1) html += `<img src="${data.image1}">`;
-            if (data.image2) html += `<img src="${data.image2}">`;
-            html += `</div>`;
-        }
-
-        // Grade
-        if (data.grade) {
-            html += `<p><strong>Grade:</strong> ${data.grade} (${getGradeLabel(data.grade)})</p>`;
-        }
-
-        // Status
-        html += `<p><strong>Status:</strong> ${data.status || "N/A"}</p>`;
-
-        // Owner
-        html += `<h3>Owner</h3>`;
-        html += `<p><strong>Name:</strong> ${data.owner || "N/A"}</p>`;
-
-        // Card Info (YOUR EXACT ORDER)
-        html += `<h3>Card Info</h3>`;
-
-        const fields = [
-            "pokemon",
-            "set",
-            "year",
-            "finish",
-            "notation",
-            "declared_value"
-        ];
-
-        fields.forEach(field => {
-            html += `
-            <p>
-                <strong>${field.replace("_", " ").toUpperCase()}:</strong>
-                ${data[field] || "N/A"}
-            </p>`;
-        });
-
-        result.innerHTML = html;
-
-    } catch (err) {
-        result.innerHTML = "<p class='error'>Database Error</p>";
-        console.error(err);
-    }
 };
 </script>
 
