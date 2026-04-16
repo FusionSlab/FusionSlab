@@ -128,7 +128,6 @@ button:hover {
 }
 </style>
 </head>
-
 <body>
 
 <img src="FusionSlab.png" alt="FusionSlab Logo" class="logo">
@@ -173,8 +172,7 @@ function getPSALabel(grade) {
         case "3": return "VERY GOOD";
         case "2": return "GOOD";
         case "1": return "POOR";
-        case "ALT": return "ALT";
-        case "Alt": return "ALT";
+        case "Alt": return "ALTERNATE ART";
         default: return "N/A";
     }
 }
@@ -232,13 +230,10 @@ window.verifyCert = async function () {
                 Status: ${data.status || "N/A"}
             </div>`;
 
-            // ❌ ONLY CHANGE: Owner section removed
             output += `<h3>Owner</h3>
                        <p><strong>Full Name:</strong> ${data.owner || "N/A"}</p>`;
 
             output += `<h3>Card Information</h3>`;
-            const fields = ["pokemon", "set", "year", "finish", "notation", "declared_value"];
-
             const fields = ["pokemon", "variant", "year", "set", "notation", "declared_value"];
             fields.forEach(f => {
                 output += `<p><strong>${f.charAt(0).toUpperCase() + f.slice(1).replace("_"," ")}:</strong> ${data[f] || "N/A"}</p>`;
