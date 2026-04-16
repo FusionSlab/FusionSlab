@@ -21,7 +21,7 @@ h1 {
 
 input {
     padding: 12px;
-    width: 260px;
+    width: 250px;
     border-radius: 6px;
     border: none;
 }
@@ -95,11 +95,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// ✅ FIXED ALT HANDLING
 function getGradeLabel(grade) {
-    const g = (grade || "").toString();
-
-    switch (g.toUpperCase()) {
+    switch (grade) {
         case "10+": return "PERFECT";
         case "10": return "GEM-MINT";
         case "9": return "MINT";
@@ -111,7 +108,7 @@ function getGradeLabel(grade) {
         case "3": return "VERY GOOD";
         case "2": return "GOOD";
         case "1": return "POOR";
-        case "ALT": return "ALT"; // ✅ Correct
+        case "Alt": return "ALT";
         default: return "N/A";
     }
 }
