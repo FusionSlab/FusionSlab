@@ -96,9 +96,9 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
 function getGradeLabel(grade) {
-    const g = (grade || "").toString();
+    const g = (grade || "").toString().toUpperCase();
 
-    switch (g.toUpperCase()) {
+    switch (g) {
         case "10+": return "PERFECT";
         case "10": return "GEM-MINT";
         case "9": return "MINT";
@@ -154,7 +154,7 @@ window.verify = async function () {
         // Status
         html += `<p><strong>Status:</strong> ${data.status || "N/A"}</p>`;
 
-        // Card Info
+        // Card Info (EXACT ORDER YOU WANTED)
         html += `<h3>Card Info</h3>`;
 
         const fields = [
@@ -166,19 +166,20 @@ window.verify = async function () {
             "declared_value"
         ];
 
-        fields.forEach(field => {
+        for (const field of fields) {
             html += `
-            <p>
-                <strong>${field.replace("_", " ").toUpperCase()}:</strong>
-                ${data[field] || "N/A"}
-            </p>`;
-        });
+                <p>
+                    <strong>${field.replace("_", " ").toUpperCase()}:</strong>
+                    ${data[field] ?? "N/A"}
+                </p>
+            `;
+        }
 
         result.innerHTML = html;
 
     } catch (err) {
-        result.innerHTML = "<p class='error'>Database Error</p>";
         console.error(err);
+        result.innerHTML = "<p class='error'>Database Error</p>";
     }
 };
 </script>
