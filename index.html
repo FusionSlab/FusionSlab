@@ -5,6 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FusionSlab</title>
 
+<!-- Favicon -->
+<link rel="icon" type="image/png" sizes="32x32" href="web-app-manifest-512x512.png">
+
+<!-- Apple Home Screen Icon -->
+<link rel="apple-touch-icon" sizes="512x512" href="web-app-manifest-512x512.png">
+
+<!-- Web App Manifest -->
+<link rel="manifest" href="manifest.json">
+
+<link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+
 <style>
 body {
     margin: 0;
@@ -12,56 +23,105 @@ body {
     background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
     color: white;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
     padding: 20px;
+    animation: fadeIn 1.2s ease-in-out;
 }
 
-h1 {
-    margin-bottom: 10px;
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.logo {
+    width: 700px;
+    max-width: 90%;
+    margin: 20px 0 10px 0;
+}
+
+.tagline {
+    font-family: 'Lobster', cursive;
+    font-size: 2rem;
+    margin-bottom: 40px;
+}
+
+.search-container {
+    width: 90%;
+    max-width: 500px;
+    margin-bottom: 20px;
 }
 
 input {
-    padding: 12px;
-    width: 260px;
-    border-radius: 6px;
+    width: 100%;
+    padding: 15px;
+    border-radius: 8px;
     border: none;
+    font-size: 16px;
 }
 
 button {
-    padding: 12px 25px;
-    margin: 10px;
-    border-radius: 6px;
+    padding: 15px 40px;
+    border-radius: 8px;
     border: none;
-    background: #00c6ff;
-    font-weight: bold;
+    font-size: 18px;
     cursor: pointer;
+    background-color: #00c6ff;
+    color: black;
+    font-weight: bold;
+    transition: 0.3s ease;
+    margin: 10px;
 }
 
-.result {
-    margin-top: 25px;
+button:hover {
+    background-color: #00a2d8;
+}
+
+.result-card {
+    margin-top: 30px;
+    padding: 25px;
+    background: none;
+    border-radius: 12px;
+    max-width: 700px;
+    width: 90%;
+    display: none;
     text-align: left;
-    max-width: 650px;
-    margin-left: auto;
-    margin-right: auto;
 }
 
-.images {
-    display: flex;
-    gap: 10px;
+.result-card h2, .result-card h3 {
+    text-align: center;
     margin: 10px 0;
 }
 
-.images img {
-    width: 48%;
+.result-card img {
+    max-width: 100%;
     border-radius: 8px;
+    margin: 10px 0;
+}
+
+.images-row {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: nowrap;
+}
+
+.images-row img {
+    max-width: 48%;
+}
+
+.not-found {
+    color: #ff6b6b;
+    font-weight: bold;
+    text-align: center;
 }
 
 .verified {
     color: #4dff88;
-    text-align: center;
-}
-
-.error {
-    color: #ff6b6b;
+    font-weight: bold;
     text-align: center;
 }
 </style>
@@ -69,14 +129,17 @@ button {
 
 <body>
 
-<h1>FusionSlab</h1>
-<p>Enter Certification Number</p>
+<img src="FusionSlab.png" alt="FusionSlab Logo" class="logo">
+<p class="tagline">Where Power Meets Precision</p>
 
-<input type="text" id="certInput" placeholder="Certification #">
-<br>
-<button onclick="verify()">Verify</button>
+<div class="search-container">
+    <input type="text" id="certSearch" placeholder="Enter Certification Number">
+</div>
 
-<div id="result" class="result"></div>
+<button onclick="verifyCert()">Verify</button>
+<button onclick="goToSubmit()">Submit</button>
+
+<div id="resultCard" class="result-card"></div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -113,14 +176,14 @@ function getPSALabel(grade) {
     }
 }
 
-window.verify = async function () {
-    const certInput = document.getElementById("certInput").value.trim();
-    const result = document.getElementById("result");
-
-    result.innerHTML = "⏳ Verifying...";
+window.verifyCert = async function () {
+    const certInput = document.getElementById("certSearch").value.trim();
+    const resultCard = document.getElementById("resultCard");
+    resultCard.style.display = "block";
+    resultCard.innerHTML = "⏳ Verifying...";
 
     if (!certInput) {
-        result.innerHTML = "<p class='error'>Please enter a certification number.</p>";
+        resultCard.innerHTML = "<p class='not-found'>Please enter a certification number.</p>";
         return;
     }
 
@@ -133,7 +196,7 @@ window.verify = async function () {
             let output = `<h2 class='verified'>Certification # ${certInput}</h2>`;
 
             if (data.image1 || data.image2) {
-                output += `<div class="images">`;
+                output += `<div class="images-row">`;
                 if (data.image1) output += `<img src="${data.image1}">`;
                 if (data.image2) output += `<img src="${data.image2}">`;
                 output += `</div>`;
@@ -166,7 +229,7 @@ window.verify = async function () {
                 Status: ${data.status || "N/A"}
             </div>`;
 
-            // ✅ OWNER NAME REMOVED (ONLY CHANGE YOU REQUESTED)
+            // ❌ ONLY CHANGE: Owner section removed
 
             output += `<h3>Card Information</h3>`;
             const fields = ["pokemon", "set", "year", "finish", "notation", "declared_value"];
