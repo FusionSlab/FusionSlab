@@ -232,7 +232,7 @@ window.verifyCert = async function () {
                        <p><strong>Full Name:</strong> ${data.owner || "N/A"}</p>`;
 
             output += `<h3>Card Information</h3>`;
-            const fields = ["pokemon", "variant", "year", "set", "notation", "declared_value"];
+            const fields = ["pokemon", "set", "year", "finish", "notation", "declared_value"];
             fields.forEach(f => {
                 output += `<p><strong>${f.charAt(0).toUpperCase() + f.slice(1).replace("_"," ")}:</strong> ${data[f] || "N/A"}</p>`;
             });
