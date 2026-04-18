@@ -192,7 +192,6 @@ input {
         <button id="leftBtn" onclick="goSubmit()">Submit</button>
     </div>
 
-    <!-- ✅ ADDED IMAGE -->
     <img src="FusionSlab.png" alt="FusionSlab Logo" style="height:40px;">
 
     <div class="header-right">
@@ -217,17 +216,22 @@ input {
 
 </div>
 
+<!-- AUTH MODAL -->
 <div id="authModal">
 <div class="auth-box">
 
-<h3>Sign In</h3>
+<h3 id="authTitle">Sign In</h3>
 
 <input id="authEmail" placeholder="Email">
 <input id="authPass" type="password" placeholder="Password">
 
-<button onclick="switchMode()" style="width:95%;margin-top:10px;">
-Sign In / Sign Up
+<button onclick="handleAuth()" style="width:95%;margin-top:10px;">
+Continue
 </button>
+
+<p id="toggleText" style="margin-top:10px;cursor:pointer;color:#0a3d91;" onclick="toggleMode()">
+Don't have an account? Sign Up
+</p>
 
 <button onclick="closeAuth()" style="width:95%;margin-top:10px;background:#ddd;">
 Exit
@@ -237,6 +241,14 @@ Exit
 
 </div>
 </div>
+
+<!-- EMAILJS -->
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script>
+(function(){
+  emailjs.init("-rXlMZTTg7hton9TE");
+})();
+</script>
 
 <script type="module">
 
@@ -268,7 +280,15 @@ function safe(v) {
 window.openAuth = () => document.getElementById("authModal").style.display = "flex";
 window.closeAuth = () => document.getElementById("authModal").style.display = "none";
 
-window.switchMode = async () => {
+window.toggleMode = () => {
+    isLogin = !isLogin;
+    document.getElementById("authTitle").innerText = isLogin ? "Sign In" : "Sign Up";
+    document.getElementById("toggleText").innerText = isLogin
+        ? "Don't have an account? Sign Up"
+        : "Already have an account? Sign In";
+};
+
+window.handleAuth = async () => {
     const email = document.getElementById("authEmail").value;
     const pass = document.getElementById("authPass").value;
     const status = document.getElementById("authStatus");
@@ -276,12 +296,18 @@ window.switchMode = async () => {
     try {
         if (isLogin) {
             await signInWithEmailAndPassword(auth, email, pass);
-            status.innerText = "Signed In";
+            status.innerText = "Signed In ✅";
         } else {
             await createUserWithEmailAndPassword(auth, email, pass);
-            status.innerText = "Account Created";
+
+            // EMAILJS SEND ON SIGNUP
+            emailjs.send("service_vxuhfls", "template_r1iassl", {
+                user_email: email,
+                time: new Date().toLocaleString()
+            });
+
+            status.innerText = "Account Created ✅";
         }
-        isLogin = !isLogin;
     } catch (e) {
         status.innerText = e.message;
     }
@@ -325,31 +351,6 @@ window.verify = async function () {
             <div class="section">
                 <div class="section-title">Back</div>
                 ${d.image2 ? `<img src="${d.image2}" style="width:100%;border-radius:8px;">` : "N/A"}
-            </div>
-
-            <div class="section">
-                <div class="section-title">Population</div>
-                <div class="pop-grid">
-                    <div class="pop-box"><div class="pop-label">With Grade</div><div class="pop-value">${safe(d.popGrade)}</div></div>
-                    <div class="pop-box"><div class="pop-label">With Higher Grade</div><div class="pop-value">${safe(d.popHigher)}</div></div>
-                    <div class="pop-box"><div class="pop-label">With Lower Grade</div><div class="pop-value">${safe(d.popLower)}</div></div>
-                </div>
-            </div>
-
-            <div class="section info-block">
-                <div>Subject: ${safe(d.subject)}</div>
-                <div>Brand/Title: ${safe(d.brand)}</div>
-                <div>Category: ${safe(d.category)}</div>
-                <div>Variety/Pedigree: ${safe(d.variety)}</div>
-                <div>Set: ${safe(d.set)}</div>
-                <div>Finish: ${safe(d.finish)}</div>
-                <div>Year: ${safe(d.year)}</div>
-                <div>Notation: ${safe(d.notation)}</div>
-            </div>
-
-            <div class="section">
-                <div class="section-title">Value</div>
-                <div class="value">${safe(d.value)}</div>
             </div>
 
         </div>
