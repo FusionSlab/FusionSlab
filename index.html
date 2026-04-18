@@ -77,7 +77,7 @@ button:hover {
     text-align: center;
 }
 
-/* input styling untouched */
+/* 🔥 FIXED INPUT (autofill safe) */
 input {
     width: 80%;
     padding: 15px;
@@ -205,7 +205,7 @@ input {
 
     <div class="panel">
 
-        <!-- 🔥 FINAL AUTOFILL IMMUNITY FIX -->
+        <!-- 🔥 ANTI-AUTOFILL FIX -->
         <input type="text" style="display:none" autocomplete="username">
         <input type="password" style="display:none" autocomplete="current-password">
 
@@ -348,6 +348,17 @@ window.verify = async function () {
             <div class="section">
                 <div class="section-title">Value</div>
                 <div class="value">${d.value || "N/A"}</div>
+            </div>
+
+            <div class="section">
+                <div>Subject: ${d.subject || "N/A"}</div>
+                <div>Brand/Title: ${d.brand || "N/A"}</div>
+                <div>Category: ${d.category || "N/A"}</div>
+                <div>Variety/Pedigree: ${d.variety || "N/A"}</div>
+                <div>Set: ${d.set || "N/A"}</div>
+                <div>Finish: ${d.finish || "N/A"}</div>
+                <div>Year: ${d.year || "N/A"}</div>
+                <div>Notation: ${d.notation || "N/A"}</div>
             </div>
 
         </div>
