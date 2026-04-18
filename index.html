@@ -203,16 +203,17 @@ input {
     </div>
 
     <div class="panel">
+
         <!-- 🔥 ONLY FIX ADDED HERE -->
         <input
             id="certSearch"
-            name="certSearch"
             placeholder="Enter Certification Number"
             autocomplete="off"
             autocapitalize="off"
             autocorrect="off"
             spellcheck="false"
         >
+
         <br><br>
         <button id="lookupBtn" onclick="verify()">Lookup Record</button>
     </div>
@@ -330,6 +331,18 @@ window.verify = async function () {
                     <div class="pop-box"><div class="pop-label">With Higher Grade</div><div class="pop-value">${d.popHigher || "N/A"}</div></div>
                     <div class="pop-box"><div class="pop-label">With Lower Grade</div><div class="pop-value">${d.popLower || "N/A"}</div></div>
                 </div>
+            </div>
+
+            <!-- FULL INFO SECTION RESTORED -->
+            <div class="section">
+                <div>Subject: ${d.subject || "N/A"}</div>
+                <div>Brand/Title: ${d.brand || "N/A"}</div>
+                <div>Category: ${d.category || "N/A"}</div>
+                <div>Variety: ${d.variety || "N/A"}</div>
+                <div>Set: ${d.set || "N/A"}</div>
+                <div>Finish: ${d.finish || "N/A"}</div>
+                <div>Year: ${d.year || "N/A"}</div>
+                <div>Notation: ${d.notation || "N/A"}</div>
             </div>
 
         </div>
