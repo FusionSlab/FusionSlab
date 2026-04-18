@@ -227,8 +227,13 @@ input {
 <input id="authEmail" placeholder="Email">
 <input id="authPass" type="password" placeholder="Password">
 
-<button onclick="switchMode()" style="width:95%;margin-top:10px;">
-Sign In / Sign Up
+<!-- 🔥 FIXED BUTTONS -->
+<button onclick="signIn()" style="width:95%;margin-top:10px;">
+Sign In
+</button>
+
+<button onclick="signUp()" style="width:95%;margin-top:10px;">
+Sign Up
 </button>
 
 <button onclick="closeAuth()" style="width:95%;margin-top:10px;background:#ddd;">
@@ -264,7 +269,8 @@ const auth = getAuth(app);
 window.openAuth = () => document.getElementById("authModal").style.display = "flex";
 window.closeAuth = () => document.getElementById("authModal").style.display = "none";
 
-window.switchMode = async () => {
+/* 🔥 NEW FIXED FUNCTIONS */
+window.signIn = async () => {
     const email = document.getElementById("authEmail").value;
     const pass = document.getElementById("authPass").value;
     const status = document.getElementById("authStatus");
@@ -273,14 +279,24 @@ window.switchMode = async () => {
         await signInWithEmailAndPassword(auth, email, pass);
         status.innerText = "Signed In";
     } catch (e) {
-        try {
-            await createUserWithEmailAndPassword(auth, email, pass);
-            status.innerText = "Account Created";
-        } catch (err) {
-            status.innerText = err.message;
-        }
+        status.innerText = e.message;
     }
 };
+
+window.signUp = async () => {
+    const email = document.getElementById("authEmail").value;
+    const pass = document.getElementById("authPass").value;
+    const status = document.getElementById("authStatus");
+
+    try {
+        await createUserWithEmailAndPassword(auth, email, pass);
+        status.innerText = "Account Created";
+    } catch (e) {
+        status.innerText = e.message;
+    }
+};
+
+/* --- EVERYTHING ELSE UNTOUCHED --- */
 
 window.verify = async function () {
 
@@ -331,7 +347,6 @@ window.verify = async function () {
                 </div>
             </div>
 
-            <!-- VALUE FIX RESTORED -->
             <div class="section">
                 <div class="section-title">Value</div>
                 <div class="value">${d.value || "N/A"}</div>
