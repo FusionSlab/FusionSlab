@@ -125,31 +125,6 @@ input {
     font-weight: bold;
 }
 
-.pop-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-}
-
-.pop-box {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 10px;
-    text-align: center;
-    background: #fafafa;
-}
-
-.pop-label {
-    font-size: 12px;
-    color: #777;
-}
-
-.pop-value {
-    font-weight: bold;
-    font-size: 16px;
-    margin-top: 5px;
-}
-
 #authModal {
     display:none;
     position:fixed;
@@ -212,13 +187,17 @@ input {
 
 </div>
 
+<!-- AUTH MODAL -->
 <div id="authModal">
 <div class="auth-box">
 <h3>Sign In</h3>
-<input placeholder="Email">
-<input type="password" placeholder="Password">
+
+<input id="authEmail" type="email" placeholder="Email">
+<input id="authPass" type="password" placeholder="Password">
+
 <button onclick="handleAuth()">Sign In / Sign Up</button>
 <button onclick="closeAuth()">Exit</button>
+
 <p id="authStatus"></p>
 </div>
 </div>
@@ -246,18 +225,37 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const auth = getAuth(app);
 
+// ✅ AUTH FIXED (RESTORED)
+window.openAuth = () => {
+    document.getElementById("authModal").style.display = "flex";
+};
+
+window.closeAuth = () => {
+    document.getElementById("authModal").style.display = "none";
+};
+
 window.handleAuth = async () => {
-    const email = document.querySelector('input[type="email"]')?.value;
-    const pass = document.querySelector('input[type="password"]')?.value;
+    const email = document.getElementById("authEmail").value;
+    const pass = document.getElementById("authPass").value;
+
+    const status = document.getElementById("authStatus");
 
     try {
         await signInWithEmailAndPassword(auth, email, pass);
+        status.innerText = "Signed In";
     } catch {
-        await createUserWithEmailAndPassword(auth, email, pass);
+        try {
+            await createUserWithEmailAndPassword(auth, email, pass);
+            status.innerText = "Account Created";
+        } catch (e) {
+            status.innerText = e.message;
+        }
     }
 };
 
+// ✅ VERIFY SYSTEM (UNCHANGED)
 window.verify = async function () {
+
     const cert = document.getElementById("certSearch").value.trim();
     const box = document.getElementById("resultBox");
 
@@ -275,10 +273,12 @@ window.verify = async function () {
     box.innerHTML = `
         <div class="result-header">Cert # ${cert}</div>
         <div class="result-body">
+
             <div class="section">
                 <div class="section-title">Full Name</div>
                 <div class="value">${d.fullName || "N/A"}</div>
             </div>
+
         </div>
     `;
 };
