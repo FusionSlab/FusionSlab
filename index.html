@@ -5,149 +5,245 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FusionSlab</title>
 
-<!-- Favicon (tab icon only) -->
-<link rel="icon" href="web-app-manifest-512x512.png" type="image/png">
-<!-- Favicon -->
-<link rel="icon" type="image/png" sizes="32x32" href="web-app-manifest-512x512.png">
-
-<!-- Apple Home Screen Icon -->
-<link rel="apple-touch-icon" sizes="512x512" href="web-app-manifest-512x512.png">
-
-<!-- Web App Manifest -->
-<link rel="manifest" href="manifest.json">
-
-<link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
-
 <style>
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-    color: white;
-    text-align: center;
+    background: #ffffff;
+    color: #111;
+}
+
+.header {
+    background: #0a3d91;
+    padding: 18px 25px;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    min-height: 100vh;
-    padding: 20px;
-    animation: fadeIn 1.2s ease-in-out;
+    color: white;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-.logo {
-    width: 700px;
-    max-width: 90%;
-    margin: 20px 0 10px 0;
-}
-
-.tagline {
-    font-family: 'Lobster', cursive;
-    font-size: 2rem;
-    margin-bottom: 40px;
-}
-
-.search-container {
-    width: 90%;
-    max-width: 500px;
-    margin-bottom: 20px;
-}
-
-input {
-    width: 100%;
-    padding: 15px;
-    border-radius: 8px;
-    border: none;
-    font-size: 16px;
+.header-left,
+.header-right {
+    display: flex;
+    gap: 10px;
+    align-items: center;
 }
 
 button {
-    padding: 15px 40px;
-    border-radius: 8px;
+    padding: 10px 14px;
     border: none;
-    font-size: 18px;
+    border-radius: 6px;
     cursor: pointer;
-    background-color: #00c6ff;
-    color: black;
     font-weight: bold;
-    transition: 0.3s ease;
-    margin: 10px;
+    background: #00c6ff;
+    color: black;
 }
 
 button:hover {
-    background-color: #00a2d8;
+    background: #00a2d8;
 }
 
-.result-card {
-    margin-top: 30px;
+.icon-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    padding: 0;
+}
+
+.container {
+    max-width: 900px;
+    margin: auto;
+    padding: 40px 20px;
+}
+
+.hero {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.hero h2 {
+    font-size: 34px;
+    margin-bottom: 5px;
+}
+
+.hero p {
+    color: #666;
+}
+
+.panel {
+    background: #f5f7fa;
     padding: 25px;
-    background: none;
-    border-radius: 12px;
-    max-width: 700px;
-    width: 90%;
-    display: none;
-    text-align: left;
-}
-
-.result-card h2, .result-card h3 {
+    border-radius: 10px;
     text-align: center;
-    margin: 10px 0;
 }
 
-.result-card img {
-    max-width: 100%;
+input {
+    width: 80%;
+    padding: 15px;
     border-radius: 8px;
-    margin: 10px 0;
+    border: 1px solid #ccc;
+    font-size: 16px;
 }
 
-.images-row {
+.result {
+    margin-top: 30px;
+    display: none;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.10);
+}
+
+.result.active {
+    display: block;
+}
+
+.result-header {
+    background: #0a3d91;
+    color: white;
+    padding: 15px;
+    font-weight: bold;
+}
+
+.result-body {
+    padding: 20px;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.section {
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.section-title {
+    font-weight: bold;
+    color: #0a3d91;
+}
+
+.value {
+    font-weight: bold;
+}
+
+.pop-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 10px;
-    flex-wrap: nowrap;
 }
 
-.images-row img {
-    max-width: 48%;
-}
-
-.not-found {
-    color: #ff6b6b;
-    font-weight: bold;
+.pop-box {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
     text-align: center;
+    background: #fafafa;
 }
 
-.verified {
-    color: #4dff88;
+.pop-label {
+    font-size: 12px;
+    color: #777;
+}
+
+.pop-value {
     font-weight: bold;
-    text-align: center;
+    font-size: 16px;
+    margin-top: 5px;
+}
+
+.info-block div {
+    margin-bottom: 10px;
+}
+
+#authModal {
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.6);
+    justify-content:center;
+    align-items:center;
+    z-index:999;
+}
+
+.auth-box {
+    background:white;
+    padding:30px;
+    border-radius:10px;
+    width:320px;
+    text-align:center;
+}
+
+.auth-box input {
+    width:90%;
+    padding:12px;
+    margin:8px 0;
+    border:1px solid #ccc;
+    border-radius:6px;
 }
 </style>
 </head>
+
 <body>
 
-<img src="FusionSlab.png" alt="FusionSlab Logo" class="logo">
-<p class="tagline">Where Power Meets Precision</p>
+<div class="header">
+    <div class="header-left">
+        <button id="leftBtn" onclick="goSubmit()">Submit</button>
+    </div>
 
-<div class="search-container">
-    <input type="text" id="certSearch" placeholder="Enter Certification Number">
+    <div class="header-right">
+        <button class="icon-btn" onclick="openAuth()">👤</button>
+    </div>
 </div>
 
-<button onclick="verifyCert()">Verify</button>
-<button onclick="goToSubmit()">Submit</button>
+<div class="container">
 
-<div id="resultCard" class="result-card"></div>
+    <div class="hero">
+        <h2>Verify a Certified Record</h2>
+        <p>Access authenticated entries from the FusionSlab database</p>
+    </div>
+
+    <div class="panel">
+        <input id="certSearch" placeholder="Enter Certification Number">
+        <br><br>
+        <button id="lookupBtn" onclick="verify()">Lookup Record</button>
+    </div>
+
+    <div class="result" id="resultBox"></div>
+
+</div>
+
+<div id="authModal">
+<div class="auth-box">
+
+<h3>Sign In</h3>
+
+<input id="authEmail" placeholder="Email">
+<input id="authPass" type="password" placeholder="Password">
+
+<button onclick="switchMode()" style="width:95%;margin-top:10px;">
+Sign In / Sign Up
+</button>
+
+<button onclick="closeAuth()" style="width:95%;margin-top:10px;background:#ddd;">
+Exit
+</button>
+
+<p id="authStatus"></p>
+
+</div>
+</div>
 
 <script type="module">
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBimLxcEZPGYY7KjX3zKsR_eFCfqPvxHg",
+  apiKey: "AIzaSyBimLxcEZPGYY7KzX3zKsR_eFCfqPvxHg",
   authDomain: "fusionslab-cert-verification.firebaseapp.com",
   databaseURL: "https://fusionslab-cert-verification-default-rtdb.firebaseio.com",
   projectId: "fusionslab-cert-verification",
@@ -157,101 +253,120 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const database = getDatabase(app);
+const db = getDatabase(app);
+const auth = getAuth(app);
 
-function getPSALabel(grade) {
-    switch (grade) {
-        case "10+": return "PERFECT!";
-        case "10": return "GEM-MINT";
-        case "9": return "MINT";
-        case "8": return "NEAR MINT-MINT";
-        case "7": return "NEAR MINT";
-        case "6": return "EX-MT";
-        case "5": return "EXCELLENT";
-        case "4": return "VG-EX";
-        case "3": return "VERY GOOD";
-        case "2": return "GOOD";
-        case "1": return "POOR";
-        case "Alt": return "ALTERNATE ART";
-        default: return "N/A";
-    }
+let isLogin = true;
+
+function safe(v) {
+    return (v === undefined || v === null || v === "") ? "N/A" : v;
 }
 
-window.verifyCert = async function () {
-    const certInput = document.getElementById("certSearch").value.trim();
-    const resultCard = document.getElementById("resultCard");
-    resultCard.style.display = "block";
-    resultCard.innerHTML = "⏳ Verifying...";
+window.openAuth = () => document.getElementById("authModal").style.display = "flex";
+window.closeAuth = () => document.getElementById("authModal").style.display = "none";
 
-    if (!certInput) {
-        resultCard.innerHTML = "<p class='not-found'>Please enter a certification number.</p>";
+window.switchMode = async () => {
+    const email = document.getElementById("authEmail").value;
+    const pass = document.getElementById("authPass").value;
+    const status = document.getElementById("authStatus");
+
+    try {
+        if (isLogin) {
+            await signInWithEmailAndPassword(auth, email, pass);
+            status.innerText = "Signed In";
+        } else {
+            await createUserWithEmailAndPassword(auth, email, pass);
+            status.innerText = "Account Created";
+        }
+        isLogin = !isLogin;
+    } catch (e) {
+        status.innerText = e.message;
+    }
+};
+
+window.verify = async function () {
+
+    const cert = document.getElementById("certSearch").value.trim();
+    const box = document.getElementById("resultBox");
+
+    const snap = await get(ref(db, cert));
+
+    box.classList.add("active");
+
+    if (!snap.exists()) {
+        box.innerHTML = `<div class="result-header">Not Found</div>`;
         return;
     }
 
-    try {
-        const certRef = ref(database, certInput);
-        const snapshot = await get(certRef);
+    const d = snap.val();
 
-        if (snapshot.exists()) {
-            const data = snapshot.val();
-            let output = `<h2 class='verified'>Certification # ${certInput}</h2>`;
+    document.getElementById("lookupBtn").style.display = "none";
+    document.getElementById("leftBtn").innerText = "Home Page";
+    document.getElementById("leftBtn").onclick = resetHome;
 
-            if (data.image1 || data.image2) {
-                output += `<div class="images-row">`;
-                if (data.image1) output += `<img src="${data.image1}">`;
-                if (data.image2) output += `<img src="${data.image2}">`;
-                output += `</div>`;
-            }
+    box.innerHTML = `
+        <div class="result-header">Cert # ${cert}</div>
 
-            if (data.grade) {
-                const label = getPSALabel(data.grade);
-                const gradeColor = (data.grade === "Alt") ? "#ff4d4d" : "#4dff88";
-                output += `<h2 style="text-align:center; margin:10px 0; color:${gradeColor};">
-                    Grade: ${data.grade} (${label})
-                </h2>`;
-            }
+        <div class="result-body">
 
-            if (data.subgrades) {
-                output += `<div style="text-align:center; margin:10px 0;">
-                    <strong>Subgrades:</strong><br>
-                    Centering: ${data.subgrades.centering || "N/A"} |
-                    Edges: ${data.subgrades.edges || "N/A"} |
-                    Surface: ${data.subgrades.surface || "N/A"} |
-                    Corners: ${data.subgrades.corners || "N/A"}
-                </div>`;
-            }
+            <div class="section">
+                <div class="section-title">Full Name</div>
+                <div class="value">${safe(d.fullName)}</div>
+            </div>
 
-            let statusColor = "#4dff88"; 
-            if (!data.status || data.status.toLowerCase() === "inactive" || data.status.toLowerCase() === "revoked") {
-                statusColor = "#ff4d4d";
-            }
+            <div class="section">
+                <div class="section-title">Front</div>
+                ${d.image1 ? `<img src="${d.image1}" style="width:100%;border-radius:8px;">` : "N/A"}
+            </div>
 
-            output += `<div style="text-align:center; font-weight:bold; margin:10px 0; color:${statusColor};">
-                Status: ${data.status || "N/A"}
-            </div>`;
+            <div class="section">
+                <div class="section-title">Back</div>
+                ${d.image2 ? `<img src="${d.image2}" style="width:100%;border-radius:8px;">` : "N/A"}
+            </div>
 
-            output += `<h3>Owner</h3>
-                       <p><strong>Full Name:</strong> ${data.owner || "N/A"}</p>`;
+            <!-- ✅ POPULATION FIRST -->
+            <div class="section">
+                <div class="section-title">Population</div>
+                <div class="pop-grid">
+                    <div class="pop-box"><div class="pop-label">With Grade</div><div class="pop-value">${safe(d.popGrade)}</div></div>
+                    <div class="pop-box"><div class="pop-label">With Higher Grade</div><div class="pop-value">${safe(d.popHigher)}</div></div>
+                    <div class="pop-box"><div class="pop-label">With Lower Grade</div><div class="pop-value">${safe(d.popLower)}</div></div>
+                </div>
+            </div>
 
-            output += `<h3>Card Information</h3>`;
-            const fields = ["pokemon", "variant", "year", "set", "notation", "declared_value"];
-            fields.forEach(f => {
-                output += `<p><strong>${f.charAt(0).toUpperCase() + f.slice(1).replace("_"," ")}:</strong> ${data[f] || "N/A"}</p>`;
-            });
+            <!-- ✅ INFO AFTER -->
+            <div class="section info-block">
+                <div>Subject: ${safe(d.subject)}</div>
+                <div>Brand/Title: ${safe(d.brand)}</div>
+                <div>Category: ${safe(d.category)}</div>
+                <div>Variety/Pedigree: ${safe(d.variety)}</div>
+                <div>Set: ${safe(d.set)}</div>
+                <div>Finish: ${safe(d.finish)}</div>
+                <div>Year: ${safe(d.year)}</div>
+                <div>Notation: ${safe(d.notation)}</div>
+            </div>
 
-            resultCard.innerHTML = output;
-        } else {
-            resultCard.innerHTML = "<h2 class='not-found'>❌ Certification Not Found</h2>";
-        }
-    } catch (error) {
-        resultCard.innerHTML = "<h2 class='not-found'>Database Connection Error</h2>";
-        console.error(error);
-    }
+            <div class="section">
+                <div class="section-title">Value</div>
+                <div class="value">${safe(d.value)}</div>
+            </div>
+
+        </div>
+    `;
 };
 
-window.goToSubmit = function () {
+window.resetHome = function () {
+    document.getElementById("certSearch").value = "";
+    document.getElementById("resultBox").classList.remove("active");
+    document.getElementById("lookupBtn").style.display = "inline-block";
+    document.getElementById("leftBtn").innerText = "Submit";
+    document.getElementById("leftBtn").onclick = goSubmit;
+};
+
+window.goSubmit = function () {
     window.location.href = "https://fusionslab.github.io/FusionSlab-Submission-Center/";
 };
+
 </script>
 
 </body>
