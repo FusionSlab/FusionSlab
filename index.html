@@ -192,6 +192,9 @@ input {
         <button id="leftBtn" onclick="goSubmit()">Submit</button>
     </div>
 
+    <!-- ✅ ADDED IMAGE -->
+    <img src="FusionSlab.png" alt="FusionSlab Logo" style="height:40px;">
+
     <div class="header-right">
         <button class="icon-btn" onclick="openAuth()">👤</button>
     </div>
@@ -324,7 +327,6 @@ window.verify = async function () {
                 ${d.image2 ? `<img src="${d.image2}" style="width:100%;border-radius:8px;">` : "N/A"}
             </div>
 
-            <!-- ✅ POPULATION FIRST -->
             <div class="section">
                 <div class="section-title">Population</div>
                 <div class="pop-grid">
@@ -334,7 +336,6 @@ window.verify = async function () {
                 </div>
             </div>
 
-            <!-- ✅ INFO AFTER -->
             <div class="section info-block">
                 <div>Subject: ${safe(d.subject)}</div>
                 <div>Brand/Title: ${safe(d.brand)}</div>
