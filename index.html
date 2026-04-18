@@ -125,6 +125,7 @@ input {
     font-weight: bold;
 }
 
+/* AUTH MODAL */
 #authModal {
     display:none;
     position:fixed;
@@ -152,6 +153,14 @@ input {
     margin:8px 0;
     border:1px solid #ccc;
     border-radius:6px;
+}
+
+/* NEW BUTTON LAYOUT */
+.auth-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
 }
 </style>
 </head>
@@ -190,15 +199,21 @@ input {
 <!-- AUTH MODAL -->
 <div id="authModal">
 <div class="auth-box">
-<h3>Sign In</h3>
+
+<h3>Account Access</h3>
 
 <input id="authEmail" type="email" placeholder="Email">
 <input id="authPass" type="password" placeholder="Password">
 
-<button onclick="handleAuth()">Sign In / Sign Up</button>
-<button onclick="closeAuth()">Exit</button>
+<!-- SEPARATE BUTTONS (FIXED) -->
+<div class="auth-buttons">
+    <button onclick="signIn()">Sign In</button>
+    <button onclick="signUp()">Sign Up</button>
+    <button onclick="closeAuth()" style="background:#ddd;">Exit</button>
+</div>
 
 <p id="authStatus"></p>
+
 </div>
 </div>
 
@@ -209,8 +224,7 @@ import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-
-// ✅ FIXED FIREBASE CONFIG (ONLY CHANGE MADE)
+/* ✅ FIXED FIREBASE CONFIG */
 const firebaseConfig = {
   apiKey: "AIzaSyBimLxcEZPGYY7KJbX3zKsR_eFCfqPvxHg",
   authDomain: "fusionslab-cert-verification.firebaseapp.com",
@@ -225,7 +239,7 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const auth = getAuth(app);
 
-// ✅ AUTH FIXED (RESTORED)
+/* MODAL CONTROLS */
 window.openAuth = () => {
     document.getElementById("authModal").style.display = "flex";
 };
@@ -234,26 +248,35 @@ window.closeAuth = () => {
     document.getElementById("authModal").style.display = "none";
 };
 
-window.handleAuth = async () => {
+/* SIGN IN */
+window.signIn = async () => {
     const email = document.getElementById("authEmail").value;
     const pass = document.getElementById("authPass").value;
-
     const status = document.getElementById("authStatus");
 
     try {
         await signInWithEmailAndPassword(auth, email, pass);
         status.innerText = "Signed In";
-    } catch {
-        try {
-            await createUserWithEmailAndPassword(auth, email, pass);
-            status.innerText = "Account Created";
-        } catch (e) {
-            status.innerText = e.message;
-        }
+    } catch (e) {
+        status.innerText = e.message;
     }
 };
 
-// ✅ VERIFY SYSTEM (UNCHANGED)
+/* SIGN UP */
+window.signUp = async () => {
+    const email = document.getElementById("authEmail").value;
+    const pass = document.getElementById("authPass").value;
+    const status = document.getElementById("authStatus");
+
+    try {
+        await createUserWithEmailAndPassword(auth, email, pass);
+        status.innerText = "Account Created";
+    } catch (e) {
+        status.innerText = e.message;
+    }
+};
+
+/* VERIFY (UNCHANGED LOGIC) */
 window.verify = async function () {
 
     const cert = document.getElementById("certSearch").value.trim();
