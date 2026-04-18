@@ -203,7 +203,16 @@ input {
     </div>
 
     <div class="panel">
-        <input id="certSearch" placeholder="Enter Certification Number">
+        <!-- 🔥 ONLY FIX ADDED HERE -->
+        <input
+            id="certSearch"
+            name="certSearch"
+            placeholder="Enter Certification Number"
+            autocomplete="off"
+            autocapitalize="off"
+            autocorrect="off"
+            spellcheck="false"
+        >
         <br><br>
         <button id="lookupBtn" onclick="verify()">Lookup Record</button>
     </div>
@@ -254,13 +263,7 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const auth = getAuth(app);
 
-/* ✅ ONLY FIX ADDED */
-window.openAuth = () => {
-    document.getElementById("authEmail").value = "";
-    document.getElementById("authPass").value = "";
-    document.getElementById("authModal").style.display = "flex";
-};
-
+window.openAuth = () => document.getElementById("authModal").style.display = "flex";
 window.closeAuth = () => document.getElementById("authModal").style.display = "none";
 
 window.switchMode = async () => {
@@ -281,7 +284,6 @@ window.switchMode = async () => {
     }
 };
 
-/* KEEP EVERYTHING ELSE EXACTLY AS IT WAS */
 window.verify = async function () {
 
     const cert = document.getElementById("certSearch").value.trim();
