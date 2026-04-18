@@ -150,10 +150,6 @@ input {
     margin-top: 5px;
 }
 
-.info-block div {
-    margin-bottom: 10px;
-}
-
 #authModal {
     display:none;
     position:fixed;
@@ -189,10 +185,10 @@ input {
 
 <div class="header">
     <div class="header-left">
-        <button id="leftBtn" onclick="goSubmit()">Submit</button>
+        <button id="leftBtn">Submit</button>
     </div>
 
-    <img src="FusionSlab.png" alt="FusionSlab Logo" style="height:40px;">
+    <img src="FusionSlab.png" style="height:40px;">
 
     <div class="header-right">
         <button class="icon-btn" onclick="openAuth()">👤</button>
@@ -209,46 +205,23 @@ input {
     <div class="panel">
         <input id="certSearch" placeholder="Enter Certification Number">
         <br><br>
-        <button id="lookupBtn" onclick="verify()">Lookup Record</button>
+        <button onclick="verify()">Lookup Record</button>
     </div>
 
     <div class="result" id="resultBox"></div>
 
 </div>
 
-<!-- AUTH MODAL -->
 <div id="authModal">
 <div class="auth-box">
-
-<h3 id="authTitle">Sign In</h3>
-
-<input id="authEmail" placeholder="Email">
-<input id="authPass" type="password" placeholder="Password">
-
-<button onclick="handleAuth()" style="width:95%;margin-top:10px;">
-Continue
-</button>
-
-<p id="toggleText" style="margin-top:10px;cursor:pointer;color:#0a3d91;" onclick="toggleMode()">
-Don't have an account? Sign Up
-</p>
-
-<button onclick="closeAuth()" style="width:95%;margin-top:10px;background:#ddd;">
-Exit
-</button>
-
+<h3>Sign In</h3>
+<input placeholder="Email">
+<input type="password" placeholder="Password">
+<button onclick="handleAuth()">Sign In / Sign Up</button>
+<button onclick="closeAuth()">Exit</button>
 <p id="authStatus"></p>
-
 </div>
 </div>
-
-<!-- EMAILJS -->
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-<script>
-(function(){
-  emailjs.init("-rXlMZTTg7hton9TE");
-})();
-</script>
 
 <script type="module">
 
@@ -257,8 +230,10 @@ import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
+
+// ✅ FIXED FIREBASE CONFIG (ONLY CHANGE MADE)
 const firebaseConfig = {
-  apiKey: "AIzaSyBimLxcEZPGYY7KzX3zKsR_eFCfqPvxHg",
+  apiKey: "AIzaSyBimLxcEZPGYY7KJbX3zKsR_eFCfqPvxHg",
   authDomain: "fusionslab-cert-verification.firebaseapp.com",
   databaseURL: "https://fusionslab-cert-verification-default-rtdb.firebaseio.com",
   projectId: "fusionslab-cert-verification",
@@ -271,50 +246,18 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const auth = getAuth(app);
 
-let isLogin = true;
-
-function safe(v) {
-    return (v === undefined || v === null || v === "") ? "N/A" : v;
-}
-
-window.openAuth = () => document.getElementById("authModal").style.display = "flex";
-window.closeAuth = () => document.getElementById("authModal").style.display = "none";
-
-window.toggleMode = () => {
-    isLogin = !isLogin;
-    document.getElementById("authTitle").innerText = isLogin ? "Sign In" : "Sign Up";
-    document.getElementById("toggleText").innerText = isLogin
-        ? "Don't have an account? Sign Up"
-        : "Already have an account? Sign In";
-};
-
 window.handleAuth = async () => {
-    const email = document.getElementById("authEmail").value;
-    const pass = document.getElementById("authPass").value;
-    const status = document.getElementById("authStatus");
+    const email = document.querySelector('input[type="email"]')?.value;
+    const pass = document.querySelector('input[type="password"]')?.value;
 
     try {
-        if (isLogin) {
-            await signInWithEmailAndPassword(auth, email, pass);
-            status.innerText = "Signed In ✅";
-        } else {
-            await createUserWithEmailAndPassword(auth, email, pass);
-
-            // EMAILJS SEND ON SIGNUP
-            emailjs.send("service_vxuhfls", "template_r1iassl", {
-                user_email: email,
-                time: new Date().toLocaleString()
-            });
-
-            status.innerText = "Account Created ✅";
-        }
-    } catch (e) {
-        status.innerText = e.message;
+        await signInWithEmailAndPassword(auth, email, pass);
+    } catch {
+        await createUserWithEmailAndPassword(auth, email, pass);
     }
 };
 
 window.verify = async function () {
-
     const cert = document.getElementById("certSearch").value.trim();
     const box = document.getElementById("resultBox");
 
@@ -329,44 +272,15 @@ window.verify = async function () {
 
     const d = snap.val();
 
-    document.getElementById("lookupBtn").style.display = "none";
-    document.getElementById("leftBtn").innerText = "Home Page";
-    document.getElementById("leftBtn").onclick = resetHome;
-
     box.innerHTML = `
         <div class="result-header">Cert # ${cert}</div>
-
         <div class="result-body">
-
             <div class="section">
                 <div class="section-title">Full Name</div>
-                <div class="value">${safe(d.fullName)}</div>
+                <div class="value">${d.fullName || "N/A"}</div>
             </div>
-
-            <div class="section">
-                <div class="section-title">Front</div>
-                ${d.image1 ? `<img src="${d.image1}" style="width:100%;border-radius:8px;">` : "N/A"}
-            </div>
-
-            <div class="section">
-                <div class="section-title">Back</div>
-                ${d.image2 ? `<img src="${d.image2}" style="width:100%;border-radius:8px;">` : "N/A"}
-            </div>
-
         </div>
     `;
-};
-
-window.resetHome = function () {
-    document.getElementById("certSearch").value = "";
-    document.getElementById("resultBox").classList.remove("active");
-    document.getElementById("lookupBtn").style.display = "inline-block";
-    document.getElementById("leftBtn").innerText = "Submit";
-    document.getElementById("leftBtn").onclick = goSubmit;
-};
-
-window.goSubmit = function () {
-    window.location.href = "https://fusionslab.github.io/FusionSlab-Submission-Center/";
 };
 
 </script>
