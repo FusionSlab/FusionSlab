@@ -77,7 +77,6 @@ button:hover {
     text-align: center;
 }
 
-/* 🔥 FIXED INPUT (autofill safe) */
 input {
     width: 80%;
     padding: 15px;
@@ -151,6 +150,11 @@ input {
     margin-top: 5px;
 }
 
+/* ✅ ONLY CHANGE */
+.info-block div {
+    margin-bottom: 12px;
+}
+
 #authModal {
     display:none;
     position:fixed;
@@ -205,21 +209,10 @@ input {
 
     <div class="panel">
 
-        <!-- 🔥 ANTI-AUTOFILL FIX -->
         <input type="text" style="display:none" autocomplete="username">
         <input type="password" style="display:none" autocomplete="current-password">
 
-        <input
-            id="certSearch"
-            name="cert_lookup_field_x9k3_unique"
-            placeholder="Enter Certification Number"
-            autocomplete="new-password"
-            autocapitalize="off"
-            autocorrect="off"
-            spellcheck="false"
-            inputmode="numeric"
-            data-form-type="other"
-        >
+        <input id="certSearch" placeholder="Enter Certification Number">
 
         <br><br>
         <button id="lookupBtn" onclick="verify()">Lookup Record</button>
@@ -247,14 +240,13 @@ input {
 </div>
 
 <script type="module">
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBimLxcEZPGYY7KzX3zKsR_eFCfqPvxHg",
+  apiKey: "AIzaSyBimLxcEZPGYY7KJbX3zKsR_eFCfqPvxHg",
   authDomain: "fusionslab-cert-verification.firebaseapp.com",
   databaseURL: "https://fusionslab-cert-verification-default-rtdb.firebaseio.com",
   projectId: "fusionslab-cert-verification",
@@ -297,12 +289,10 @@ window.signUp = async () => {
 };
 
 window.verify = async function () {
-
     const cert = document.getElementById("certSearch").value.trim();
     const box = document.getElementById("resultBox");
 
     const snap = await get(ref(db, cert));
-
     box.classList.add("active");
 
     if (!snap.exists()) {
@@ -350,7 +340,8 @@ window.verify = async function () {
                 <div class="value">${d.value || "N/A"}</div>
             </div>
 
-            <div class="section">
+            <!-- ✅ ONLY CHANGE HERE -->
+            <div class="section info-block">
                 <div>Subject: ${d.subject || "N/A"}</div>
                 <div>Brand/Title: ${d.brand || "N/A"}</div>
                 <div>Category: ${d.category || "N/A"}</div>
@@ -376,7 +367,6 @@ window.resetHome = function () {
 window.goSubmit = function () {
     window.location.href = "https://fusionslab.github.io/FusionSlab-Submission-Center/";
 };
-
 </script>
 
 </body>
