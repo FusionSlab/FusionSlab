@@ -150,6 +150,7 @@ input {
     margin-top: 5px;
 }
 
+/* ✅ ONLY CHANGE */
 .info-block div {
     margin-bottom: 12px;
 }
@@ -221,25 +222,25 @@ input {
 
 </div>
 
-<!-- AUTH MODAL -->
 <div id="authModal">
-<div class="auth-box">
+    <div class="auth-box">
 
-<h3>Sign In</h3>
+        <h3>Sign In</h3>
 
-<input id="authEmail" placeholder="Email">
-<input id="authPass" type="password" placeholder="Password">
+        <input id="authEmail" placeholder="Email">
+        <input id="authPass" type="password" placeholder="Password">
 
-<button onclick="signIn()" style="width:95%;margin-top:10px;">Sign In</button>
-<button onclick="signUp()" style="width:95%;margin-top:10px;">Sign Up</button>
-<button onclick="closeAuth()" style="width:95%;margin-top:10px;background:#ddd;">Exit</button>
+        <button onclick="signIn()" style="width:95%;margin-top:10px;">Sign In</button>
+        <button onclick="signUp()" style="width:95%;margin-top:10px;">Sign Up</button>
+        <button onclick="closeAuth()" style="width:95%;margin-top:10px;background:#ddd;">Exit</button>
 
-<p id="authStatus"></p>
+        <p id="authStatus"></p>
 
-</div>
+    </div>
 </div>
 
 <script type="module">
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -256,11 +257,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
-
-/* 🔥 ONLY FIX: AUTH WAS NEVER INITIALIZED */
 const auth = getAuth(app);
-
-/* ---------------- AUTH ---------------- */
 
 window.openAuth = () => document.getElementById("authModal").style.display = "flex";
 window.closeAuth = () => document.getElementById("authModal").style.display = "none";
@@ -291,8 +288,6 @@ window.signUp = async () => {
     }
 };
 
-/* ---------------- VERIFY (UNCHANGED) ---------------- */
-
 window.verify = async function () {
     const cert = document.getElementById("certSearch").value.trim();
     const box = document.getElementById("resultBox");
@@ -313,16 +308,52 @@ window.verify = async function () {
 
     box.innerHTML = `
         <div class="result-header">Cert # ${cert}</div>
+
         <div class="result-body">
+
             <div class="section">
                 <div class="section-title">Full Name</div>
                 <div class="value">${d.fullName || "N/A"}</div>
             </div>
+
+            <div class="section">
+                <div class="section-title">Front</div>
+                ${d.image1 ? `<img src="${d.image1}" style="width:100%;border-radius:8px;">` : "N/A"}
+            </div>
+
+            <div class="section">
+                <div class="section-title">Back</div>
+                ${d.image2 ? `<img src="${d.image2}" style="width:100%;border-radius:8px;">` : "N/A"}
+            </div>
+
+            <div class="section">
+                <div class="section-title">Population</div>
+                <div class="pop-grid">
+                    <div class="pop-box"><div class="pop-label">With Grade</div><div class="pop-value">${d.popGrade || "N/A"}</div></div>
+                    <div class="pop-box"><div class="pop-label">With Higher Grade</div><div class="pop-value">${d.popHigher || "N/A"}</div></div>
+                    <div class="pop-box"><div class="pop-label">With Lower Grade</div><div class="pop-value">${d.popLower || "N/A"}</div></div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">Value</div>
+                <div class="value">${d.value || "N/A"}</div>
+            </div>
+
+            <div class="section info-block">
+                <div>Subject: ${d.subject || "N/A"}</div>
+                <div>Brand/Title: ${d.brand || "N/A"}</div>
+                <div>Category: ${d.category || "N/A"}</div>
+                <div>Variety/Pedigree: ${d.variety || "N/A"}</div>
+                <div>Set: ${d.set || "N/A"}</div>
+                <div>Finish: ${d.finish || "N/A"}</div>
+                <div>Year: ${d.year || "N/A"}</div>
+                <div>Notation: ${d.notation || "N/A"}</div>
+            </div>
+
         </div>
     `;
 };
-
-/* ---------------- RESET ---------------- */
 
 window.resetHome = function () {
     document.getElementById("certSearch").value = "";
@@ -335,6 +366,7 @@ window.resetHome = function () {
 window.goSubmit = function () {
     window.location.href = "https://fusionslab.github.io/FusionSlab-Submission-Center/";
 };
+
 </script>
 
 </body>
