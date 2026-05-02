@@ -342,15 +342,17 @@ window.verify = async function () {
 
             <div class="section info-block">
     ${d.subject ? `<div>Subject: ${d.subject}</div>` : ""}
-    ${d.brand ? `<div>Brand/Title: ${d.brand}</div>` : ""}
+    ${d.brand ? `<div>Brand: ${d.brand}</div>` : ""}
     ${d.category ? `<div>Category: ${d.category}</div>` : ""}
-    ${d.variety ? `<div>Variety/Pedigree: ${d.variety}</div>` : ""}
     ${d.set ? `<div>Set: ${d.set}</div>` : ""}
-    ${d.finish ? `<div>Finish: ${d.finish}</div>` : ""}
+    ${d.team ? `<div>Team: ${d.team}</div>` : ""}
     ${d.year ? `<div>Year: ${d.year}</div>` : ""}
     ${d.notation ? `<div>Notation: ${d.notation}</div>` : ""}
+    ${d.variety ? `<div>Variety: ${d.variety}</div>` : ""}
+    ${d.finish ? `<div>Finish: ${d.finish}</div>` : ""}
+    ${d.rarity ? `<div>Rarity: ${d.rarity}</div>` : ""}
+    ${d.notes ? `<div>Additional Notes: ${d.notes}</div>` : ""}
 </div>
-
         </div>
     `;
 };
