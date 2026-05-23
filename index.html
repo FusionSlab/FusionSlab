@@ -54,7 +54,7 @@ button:hover {
 .container {
     max-width: 900px;
     margin: auto;
-    padding: 40px 20px;
+    padding: 40px 20px 80px 20px; /* 👈 extra bottom space */
 }
 
 .hero {
@@ -345,12 +345,20 @@ window.verify = async function () {
                 </div>
 
         <div style="text-align:center; margin:20px 0 40px 0;">
-            <button onclick="return false;">
-                Add To Collection
-            </button>
-        </div>
 
+    <button onclick="return false;">
+        Add To Collection
+    </button>
+
+    <div style="
+        margin-top:10px;
+        font-size:14px;
+        color:#666;
+    ">
+        Add Your Card To Your Card Collector Collection
     </div>
+
+</div>
 `;
 };
 
