@@ -342,8 +342,16 @@ window.verify = async function () {
     ${d.rarity ? `<div>Rarity: ${d.rarity}</div>` : ""}
     ${d.notes ? `<div>Additional Notes: ${d.notes}</div>` : ""}
 </div>
+                </div>
+
+        <div style="text-align:center; margin:20px 0 40px 0;">
+            <button onclick="return false;">
+                Add To Collection
+            </button>
         </div>
-    `;
+
+    </div>
+`;
 };
 
 window.resetHome = function () {
