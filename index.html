@@ -15,12 +15,8 @@ body {
 }
 
 .header {
-    background: #0a3d91;
-    padding: 18px 25px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: white;
+    height: 70px;
+    box-sizing: border-box;
 }
 
 .header-left,
@@ -28,6 +24,13 @@ body {
     display: flex;
     gap: 10px;
     align-items: center;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    position: relative;
+    height: 100%;
 }
 
 button {
@@ -45,10 +48,19 @@ button:hover {
 }
 
 .icon-btn {
-    width: 38px;
-    height: 38px;
+    height: 100%;
+    aspect-ratio: 1 / 1;
     border-radius: 50%;
     padding: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    transform: scale(1.2); /* makes it slightly bigger visually */
+    transform-origin: center;
 }
 
 .container {
@@ -199,7 +211,12 @@ input {
     <div class="header-right">
         <button class="icon-btn" onclick="window.open('https://fusionslab.github.io/CardCollector/', '_blank')">
     <img src="Card Collector.png"
-    style="width:38px;height:38px;object-fit:contain;display:block;">
+     style="
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+     ">
 </button>
     </div>
 </div>
