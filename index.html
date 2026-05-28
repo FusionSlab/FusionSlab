@@ -21,6 +21,7 @@ body {
     justify-content: space-between;
     align-items: center;
     color: white;
+    position: relative;
 }
 
 .header-left,
@@ -194,8 +195,13 @@ input {
         <button id="leftBtn" onclick="goSubmit()">Submit</button>
     </div>
 
-    <img src="FusionSlab.png" alt="FusionSlab Logo" style="height:40px;">
-
+    <img src="FusionSlab.png" alt="FusionSlab Logo" style="
+    height:40px;
+    position:absolute;
+    left:50%;
+    transform:translateX(-50%);
+">
+    
     <div class="header-right">
         <img src="Card Collector.png"
      onclick="window.open('https://fusionslab.github.io/CardCollector/', '_blank')"
