@@ -16,12 +16,14 @@ body {
 
 .header {
     background: #0a3d91;
-    padding: 18px 25px;
+    height: 76px;
+    padding: 0 25px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     color: white;
     position: relative;
+    box-sizing: border-box;
 }
 
 .header-left,
@@ -198,8 +200,9 @@ input {
     <img src="FusionSlab.png" alt="FusionSlab Logo" style="
     height:40px;
     position:absolute;
+    top:50%;
     left:50%;
-    transform:translateX(-50%);
+    transform:translate(-50%, -50%);
 ">
     
     <div class="header-right">
